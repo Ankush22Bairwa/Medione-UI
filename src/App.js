@@ -1,24 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React , { useState, useEffect } from 'react';
 import './App.css';
-
+import doctorlist from './components/doctors-list';
 function App() {
+  const [doctor, setDoctor] = useState([]);
+  
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/patients/",{
+      method: "GET",
+      headers: {
+        'Content-type' : "application/json",
+        'Authorization' : "Token <token>"
+      }
+    })
+    .then(res => res.json())
+    .then(res => setDoctor(res))
+    .catch(err => console.log(err))
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Doctor List</h1>
       </header>
+      <div className="layout">
+          <doctorlist />
+          <div>About US </div>
+        </div>
     </div>
   );
 }
